@@ -1,4 +1,5 @@
 require 'requestinfo'
+require 'base64'
 class KeyfilesController < ApplicationController
   before_action :set_keyfile, only: [:show, :update, :destroy]
 
@@ -10,6 +11,7 @@ class KeyfilesController < ApplicationController
     render json: @keyfiles
   end
 
+
   # GET /keyfiles/1
   # GET /keyfiles/1.json
   def show
@@ -17,11 +19,22 @@ class KeyfilesController < ApplicationController
   end
   
   def identify
-  	@keyfile = Keyfile.where("filename = ?", params[:filename]).take
+  	@keyfile = params[:filename]
   	#render json: @keyfile
-  	if @keyfile.nil? then render text: "Nema nis :("
-  	else render json: @keyfile
-  	end
+    @fullFile = "app/assets/keyfolder/#{@keyfile}.txt"
+    if(File.file?(@fullFile)) then
+        #render file: @fullFile
+        @encoded = Base64.strict_encode64(open(@fullFile) { |io| io.read})
+		render :json => { :filename => @keyfile, :file => @encoded}
+    
+    else
+        render :json => { :filename => @keyfile, :file => "" }
+    
+    #if @keyfile.nil? then render text: "Nema nis :("
+    #else render json: @keyfile
+    #render file: @fullFile
+    
+    end
   end
 
 

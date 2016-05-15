@@ -84,6 +84,6 @@ class RequestinfosController < ApplicationController
     end
 
     def requestinfo_params
-      params.require(:requestinfo).permit(:filename, :key)
+      params.permit(:filename, :key);
     end
 end

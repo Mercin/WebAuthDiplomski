@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
    get 'keyfiles/identify/:filename' => 'keyfiles#identify'
-   post 'requestinfos/authorize/' => 'requestinfos#authorize'
+   get 'requestinfos/authorize/' => 'requestinfos#authorize'
   resources :keyfiles, except: [:new, :edit]
   resources :requestinfos, except: [:new, :edit]
   # The priority is based upon order of creation: first created -> highest priority.
